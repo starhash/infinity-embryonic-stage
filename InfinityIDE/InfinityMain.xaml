@@ -1,0 +1,204 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:InfinityIDE"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" x:Class="InfinityIDE.InfinityMain"
+    xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    Title="InfinityMain" Height="500" Width="736" AllowsTransparency="True" WindowStyle="None" 
+    Background="{x:Null}" WindowState="Maximized" StateChanged="Window_StateChanged" 
+    Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" d:IsEffectDisabled="True" Closed="Window_Closed">
+
+    <Window.Effect>
+        <DropShadowEffect x:Name="WindowDropShadow" Direction="-90" BlurRadius="16" ShadowDepth="0"/>
+    </Window.Effect>
+    <Grid x:Name="WindowGrid" Margin="32" Background="#A3000000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="TitleBarGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="56"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle x:Name="TitleBarRectangle" Margin="0" Grid.ColumnSpan="2" PreviewMouseMove="TitleBarRectangle_PreviewMouseMove" Fill="#02000000"/>
+            <Image x:Name="InfinityIcon" Source="Assets/Images/48x48.png" Panel.ZIndex="1" Margin="0,0,0,-4"/>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0" Orientation="Horizontal" FlowDirection="RightToLeft" Panel.ZIndex="1">
+                <Button x:Name="CloseInfinityButton" Content="&#xE10A;" HorizontalAlignment="Right" FontFamily="Segoe UI Symbol" BorderBrush="{x:Null}" BorderThickness="0" Background="{x:Null}" Foreground="White" IsCancel="True" Width="40" Style="{DynamicResource CloseInfinityFlatButton}" Click="CloseInfinityButton_Click" Panel.ZIndex="1"/>
+                <Button x:Name="MaximizeRestoreInfinityButton" Content="&#xE158;" HorizontalAlignment="Right" FontFamily="Segoe UI Symbol" BorderBrush="{x:Null}" BorderThickness="0" Background="{x:Null}" Foreground="White" IsCancel="True" Width="40" Style="{DynamicResource MaximizeRestoreInfinityFlatButton}" Tag="&#xE155;" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="1" Click="MaximizeRestoreInfinityButton_Click" Panel.ZIndex="1"/>
+                <Button x:Name="MinimizeButton" Content="&#xE108;" HorizontalAlignment="Right" FontFamily="Segoe UI Symbol" BorderBrush="{x:Null}" BorderThickness="0" Background="{x:Null}" Foreground="White" IsCancel="True" Width="40" Style="{DynamicResource MinimizeInfinityFlatButton}" Click="MinimizeButton_Click" Panel.ZIndex="1"/>
+            </StackPanel>
+            <Label Content="Infinity IDE" HorizontalAlignment="Left" Grid.Column="1" Foreground="White" Background="{x:Null}" FontSize="14" Padding="0,7,0,0"/>
+        </Grid>
+        <Grid x:Name="StatusBar" Margin="0" Grid.Row="3" Background="#FF37B5EA">
+            <Label x:Name="Status" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,0,0,0" Padding="5,3,5,5" Foreground="White" Background="{x:Null}" FontFamily="Segoe UI Semilight"/>
+        </Grid>
+        <Menu x:Name="MenuBar" Grid.Row="1" Margin="4,0,0,0" HorizontalAlignment="Left" Foreground="White" Background="{x:Null}" VerticalContentAlignment="Bottom">
+            <MenuItem x:Name="FileMenu" Header="_FILE" Foreground="White" Height="16" Style="{DynamicResource InfinityFlatMenuStyle}" VerticalAlignment="Bottom" Margin="0" Padding="6,-1,6,0">
+                <MenuItem x:Name="NewMenuItem" Header="New" Style="{DynamicResource InfinityFlatSubMenuStyle}">
+                    <MenuItem.Icon>
+                        <Grid>
+                            <Label FontFamily="Segoe UI Symbol" Content="&#xE132;" Foreground="White" Padding="0" />
+                        </Grid>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="NewProjectMenuItem" Header="New Project" InputGestureText="Ctrl + N, Ctrl + P" Click="NewProjectMenuItem_Click" Style="{DynamicResource InfinityFlatSubMenuStyle}">
+                        <MenuItem.Icon>
+                            <Grid>
+                                <Image Source="Assets/Images/infinity.png" />
+                            </Grid>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="NewFileMenuItem" Header="New File" InputGestureText="Ctrl + N, Ctrl + F" Style="{DynamicResource InfinityFlatSubMenuStyle}">
+                        <MenuItem.Icon>
+                            <Grid>
+                                <Label Content="&#xE132;" Foreground="White" Padding="2,0,0,0" FontFamily="Segoe UI Symbol" FontSize="11" />
+                            </Grid>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="NewGrammarFileMenuItem" Header="New Script" InputGestureText="(*.igrm)">
+                            <MenuItem.Icon>
+                                <Grid>
+                                    <Image Source="Assets/Images/is.png" />
+                                </Grid>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="New Grammar" InputGestureText="(*.is)">
+                            <MenuItem.Icon>
+                                <Grid>
+                                    <Image Source="Assets/Images/grm.png" />
+                                </Grid>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="OpenMenuItem" Header="Open" Style="{DynamicResource InfinityFlatSubMenuStyle}">
+                    <MenuItem.Icon>
+                        <Grid>
+                            <Label FontFamily="Segoe UI Symbol" Content="&#xE188;" Foreground="#FFDAB173" Padding="0" />
+                        </Grid>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="OpenProjectMenuItem" Header="Open Project" InputGestureText="Ctrl + O, Ctrl + P" Click="OpenProjectMenuItem_Click" />
+                    <MenuItem x:Name="OpenFileMenuItem" Header="Open File" InputGestureText="Ctrl + O, Ctrl + F"/>
+                </MenuItem>
+                <MenuItem x:Name="SaveMenuItem" Header="Save" InputGestureText="Ctrl + S" Style="{DynamicResource InfinityFlatMenuStyle}">
+                    <MenuItem.Icon>
+                        <Grid>
+                            <Label FontFamily="Segoe UI Symbol" Content="&#xE105;" Foreground="#FF1D80AA" Padding="5,0" />
+                        </Grid>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="SaveAsMenuItem" Header="Save As" InputGestureText="Ctrl + Alt + S" Style="{DynamicResource InfinityFlatSubMenuStyle}"/>
+                <Separator HorizontalAlignment="Left" Height="1" Width="204" Background="#FF303030"/>
+                <MenuItem x:Name="SaveAllMenuItem" Header="Save All" HorizontalAlignment="Left" Width="218" InputGestureText="Ctrl + Shift + S"/>
+                <Separator HorizontalAlignment="Left" Height="1" Width="204" Background="#FF303030"/>
+                <MenuItem Header="Exit" HorizontalAlignment="Left" Width="218" InputGestureText="Alt + F4"/>
+            </MenuItem>
+            <MenuItem x:Name="EditMenu" Header="_EDIT" Style="{DynamicResource InfinityFlatMenuStyle}" VerticalAlignment="Bottom" Height="16" Margin="0,4,0,0" Padding="6,-1,6,0" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White">
+                <MenuItem x:Name="UndoMenuItem" Header="Undo" InputGestureText="Ctrl + Z"/>
+                <MenuItem x:Name="RedoMenuItem" Header="Redo" InputGestureText="Ctrl + Shift + Z"/>
+                <Separator HorizontalAlignment="Left" Height="1" Width="204" Background="#FF303030" Margin="0"/>
+                <MenuItem x:Name="CutMenuItem" Header="Cut" InputGestureText="Ctrl + X"/>
+                <MenuItem x:Name="CopyMenuItem" Header="Copy" InputGestureText="Ctrl + C"/>
+                <MenuItem x:Name="PasteManuItem" Header="Paste" InputGestureText="Ctrl + V"/>
+                <Separator HorizontalAlignment="Left" Height="1" Width="204" Background="#FF303030" Margin="0"/>
+                <MenuItem x:Name="SelectAllMenuItem" Header="Select All" InputGestureText="Ctrl + A"/>
+            </MenuItem>
+            <MenuItem x:Name="ProjectMenu" Header="_PROJECT" Style="{DynamicResource InfinityFlatMenuStyle}" VerticalAlignment="Bottom" Height="16" Padding="6,-1,6,0" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="White">
+                <MenuItem x:Name="ProjectNewSourceFileMenuItem" Header="New Source File" InputGestureText="Ctrl + N" Click="ProjectNewSourceFileMenuItem_Click" Style="{DynamicResource InfinityFlatMenuStyle}"/>
+                <MenuItem x:Name="ProjectNewSourceDirectoryMenuItem" Header="New Source Directory" InputGestureText="Ctrl + Alt + N" Click="ProjectNewSourceDirectoryMenuItem_Click" Style="{DynamicResource InfinityFlatMenuStyle}"/>
+                <MenuItem x:Name="ProjectPropertiesMenuItem" Header="Properties" InputGestureText="F4" Style="{DynamicResource InfinityFlatMenuStyle}"/>
+            </MenuItem>
+        </Menu>
+        <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#FF37B5EA" Margin="0,4,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="230"/>
+                </Grid.ColumnDefinitions>
+                <TreeView x:Name="ProjectExplorer" BorderThickness="2,0,0,0" Foreground="White" Background="#51000000" BorderBrush="#FF37B5EA" Padding="0,8" Style="{DynamicResource InfinityFlatTreeViewStyle}" Grid.Column="2">
+                    <TreeViewItem x:Name="ProjectExplorerTreeItem" Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Foreground="White" Padding="1,0,0,1" Margin="0">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Assets/Images/iproj.png" Margin="-12,0,0,0" />
+                                <TextBlock x:Name="ProjectExplorerRoot" Text="Project" Padding="4,0,0,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem Foreground="{Binding Foreground, ElementName=ProjectExplorer}" Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Padding="1,0,0,1" Margin="0">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="#FFDAB173" FontFamily="Segoe UI Symbol" Text="&#xE15E;" Padding="4,0" />
+                                <TextBlock Text="Properties"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <TreeViewItem Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Foreground="White">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Foreground="#FFCDCDCD" FontFamily="Segoe UI Symbol" Text="&#xE188;" Padding="4,0" />
+                                    <TextBlock x:Name="ProjectDirectoryTreeItem" Text="Name"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Foreground="White">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Foreground="#FFC4CACD" FontFamily="Segoe UI Symbol" Text="&#xE1CB;" Padding="4,0" />
+                                    <TextBlock x:Name="ProjectTypeTreeItem" Text="Type"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                    <TreeViewItem x:Name="ProjectReferences" Foreground="{Binding Foreground, ElementName=ProjectExplorer}" Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Padding="1,0,0,1" Margin="0">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="#FFDEDEDE" FontFamily="Segoe UI Symbol" Text="&#xE167;" Padding="4,0" />
+                                <TextBlock Text="References"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem x:Name="ProjectSources" Foreground="{Binding Foreground, ElementName=ProjectExplorer}" Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Padding="1,0,0,1" Margin="0" IsExpanded="True">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="White" FontFamily="Segoe UI Symbol" Text="&#xE148;" Padding="4,0" />
+                                <TextBlock Text="Sources"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                    <TreeViewItem x:Name="Sampler_Node" Header="Sampler Node" Foreground="White" Visibility="Collapsed">
+                        <TreeViewItem x:Name="__SampleDirectoryTreeItem" Foreground="White" Width="209">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Foreground="#FFDAB173" FontFamily="Segoe UI Symbol" Text="&#xE188;" Padding="4,0" />
+                                    <TextBlock Text="Sample Directory"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="__SampleFileTreeItem" Foreground="White" Style="{DynamicResource InfinityFlatTreeViewItemStyle}" Width="209">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Foreground="#FFEBEBEB" FontFamily="Segoe UI Symbol" Text="&#xE132;" Padding="4,0" />
+                                    <TextBlock Text="Sample File"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="#FF37B5EA"/>
+                <TabControl x:Name="tabControl" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
+                    <TabItem Header="ICAsm Console" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF37B5EA" IsSelected="True">
+                        <Grid Background="#33000000">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="textBox" TextWrapping="Wrap" Text="&gt; " BorderThickness="0" SelectionBrush="#FF53B028" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF37B5EA" UndoLimit="32" PreviewKeyDown="textBox_PreviewKeyDown" CaretBrush="White" Cursor="UpArrow" FontFamily="Consolas" FontSize="13.333" SelectionChanged="textBox_SelectionChanged"/>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
